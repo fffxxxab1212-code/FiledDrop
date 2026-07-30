@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FileDrop — Partage de fichiers temporaire</title>
+<meta name="description" content="Envoyez un fichier, obtenez un lien sécurisé et éphémère. Sans compte, sans trace." />
+
+<!-- Polices : pairing distinctif (display + body + mono pour la data) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="icon" href="data:,">
+</head>
+<body>
+
+<div class="ambient-bg"><div class="grain"></div></div>
+
+<header class="topbar">
+  <a href="/" class="brand">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 17v1a3 3 0 003 3h8a3 3 0 003-3v-1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <span>
+      <span class="brand-name">FileDrop</span><br/>
+      <span class="brand-tag">transfert éphémère</span>
+    </span>
+  </a>
+  <div class="topbar-note"><span class="dot"></span> Aucun compte requis</div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Envoyez un fichier.<br/>Il s'efface tout seul.</h1>
+    <p>Glissez vos fichiers, choisissez leur durée de vie, obtenez un lien impossible à deviner. Rien n'est conservé au-delà de l'expiration.</p>
+  </section>
+
+  <!-- Zone Drag & Drop -->
+  <div class="glass-panel dropzone" id="dropzone">
+    <div class="dropzone-orb">
+      <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 16V4m0 0L7 9m5-5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h3>Glissez vos fichiers ici</h3>
+    <p>ou sélectionnez-les manuellement — plusieurs fichiers acceptés</p>
+    <button type="button" class="btn btn-primary" id="browse-btn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3h6l2 3h3a1 1 0 011 1v11a2 2 0 01-2 2H5a2 2 0 01-2-2V7a1 1 0 011-1h3l2-3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="2"/></svg>
+      Choisir un fichier
+    </button>
+    <input type="file" id="file-input" multiple />
+  </div>
+
+  <!-- Liste des fichiers sélectionnés -->
+  <div class="file-list" id="file-list"></div>
+
+  <!-- Options d'upload : expiration + résumé -->
+  <div class="glass-panel upload-options" id="upload-options" style="display:none;">
+    <div>
+      <span class="option-label">Durée avant expiration</span>
+      <div class="expiration-grid" id="expiration-grid">
+        <div class="expiration-chip" data-key="10m">10 min</div>
+        <div class="expiration-chip" data-key="1h">1 heure</div>
+        <div class="expiration-chip active" data-key="24h">24 heures</div>
+        <div class="expiration-chip" data-key="7d">7 jours</div>
+        <div class="expiration-chip" data-key="30d">30 jours</div>
+      </div>
+    </div>
+    <div class="upload-summary">
+      <span>Taille totale : <strong id="total-size">0 Mo</strong></span>
+      <span>Estimation : <strong id="eta-estimate">—</strong></span>
+    </div>
+    <button type="button" class="btn btn-primary btn-block" id="upload-btn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 16V4m0 0L7 9m5-5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Envoyer
+    </button>
+  </div>
+
+  <!-- Barre de progression -->
+  <div class="glass-panel progress-wrap" id="progress-wrap">
+    <div class="progress-header">
+      <span id="progress-label">Envoi en cours…</span>
+      <strong id="progress-percent">0%</strong>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <!-- Résultat -->
+  <div class="glass-panel result-panel" id="result-panel"></div>
+</main>
+
+<footer>FileDrop — les fichiers expirés sont supprimés automatiquement et définitivement.</footer>
+
+<div class="toast-stack" id="toast-stack"></div>
+
+<script src="/js/toast.js"></script>
+<script src="/js/helpers.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
